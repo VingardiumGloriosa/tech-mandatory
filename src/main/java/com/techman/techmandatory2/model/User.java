@@ -7,6 +7,7 @@ import lombok.ToString;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
@@ -25,6 +26,14 @@ public class User {
 
     private String role;
 
+//    @JoinTable(
+//            name = "friendships",
+//            joinColumns = @JoinColumn(name = "user_id"),
+//            inverseJoinColumns = @JoinColumn(name = "outsideUser_id"))
+//    Set<OutsideUser> friends;
+
+    @OneToMany(mappedBy = "user")
+    Set<Friendship> friendships;
 
     public User(String firstName, String lastName, String username, String password, String role) {
         this.firstName = firstName;
@@ -33,4 +42,7 @@ public class User {
         this.password = password;
         this.role = role;
     }
+
+
 }
+

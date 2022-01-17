@@ -4,6 +4,7 @@ package com.techman.techmandatory2.controller;
 
 import com.techman.techmandatory2.model.User;
 import com.techman.techmandatory2.repo.UserRepo;
+import com.techman.techmandatory2.repo.OutsideUserRepo;
 import com.techman.techmandatory2.security.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,6 +20,9 @@ import java.util.List;
 public class MainController {
     @Autowired
     UserRepo userRepo;
+
+    @Autowired
+    OutsideUserRepo outsideUserRepo;
 
     @Autowired
     SecurityUtil securityUtil;
@@ -80,4 +84,6 @@ public class MainController {
 
         return "redirect:/signUp?created";
     }
+
+
 }
