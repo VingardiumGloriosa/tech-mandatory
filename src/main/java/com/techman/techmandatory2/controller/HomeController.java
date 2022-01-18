@@ -20,7 +20,7 @@ public class HomeController {
     FriendshipService friendshipService;
 
     private RestTemplate restTemplate = new RestTemplate();
-    private static String currentHost = "http://192.168.0.181:9090/";
+    private static String currentHost = "http://54.161.92.44:9090/";
 
     public HomeController(FriendshipService friendshipService) {
         this.friendshipService = friendshipService;
