@@ -42,16 +42,12 @@ public class MainController {
         //get logged in user
         User user = securityUtil.getLoggedInUser();
 
-//        List<Booking> bookings;
+//        List<Friendship2> friendships2;
+        String username = user.getUsername(); //change to email when done
 
-//        if (user.getRole().equals("ROLE_ADMIN") || user.getRole().equals("ROLE_SECRETARY"))
-//        {
-//            model.addAttribute("bookings", bookingRepo.findAll());
-//        }
-//        else
-//        {
-//            model.addAttribute("bookings", bookingRepo.findByUser(user));
-//        }
+
+//      model.addAttribute("friendships2", friendships2.findBySrcUserEmail(username) || friendships2.findByDestUserEmail(username)); // or quaery
+
         return "index";
     }
 

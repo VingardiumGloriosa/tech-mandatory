@@ -46,5 +46,30 @@
 <h3 th:text="${greeting}"></h3>
 <!--Test end-->
 
+<div class="row">
+    <h3> <span sec:authorize="hasAnyRole('ROLE_USER')">Friends</span> </h3>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Email</th>
+            <th scope="col">Platform</th>
+            <th scope="col">Status</th>
+            <th scope="col" >Action </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="friendship2 : ${friendships2}">
+            <td>[[${friendship2.email}]]</td>
+            <td>[[${friendship2.platform}]]</td>
+            <td>[[${friendship2.status}]]</td>
+            <td>
+                <a th:href="@{/viewBooking/{bookingId} (bookingId=${booking.id})}">Block </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
 </body>
 </html>
