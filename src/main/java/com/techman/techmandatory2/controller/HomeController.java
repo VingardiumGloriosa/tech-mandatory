@@ -22,6 +22,10 @@ public class HomeController {
     final String API_GREETING_GET = "http://localhost:9091/apiGreetingGet?greeting=hi from client GET";
     final String API_GREETING_POST = "http://localhost:9091/apiGreetingPost";
     private RestTemplate restTemplate = new RestTemplate();
+<<<<<<< Updated upstream
+=======
+    private static String currentHost = "http://54.161.92.44:9090//";
+>>>>>>> Stashed changes
 
     @PostMapping("/sendGetGreeting")
     public String sendGetGreeting(Model model) {
