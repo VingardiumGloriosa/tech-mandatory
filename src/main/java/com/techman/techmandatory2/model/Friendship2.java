@@ -3,12 +3,14 @@ package com.techman.techmandatory2.model;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 
 @Entity
 @Getter @Setter
 @NoArgsConstructor
+@ToString
 public class Friendship2 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

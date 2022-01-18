@@ -19,12 +19,18 @@ public class FriendshipService {
         String src = protocol.getSRC();
         String dest = protocol.getDEST();
         Friendship2 friendship = friendship2Repo.findBySrcUserEmailAndDestUserEmail(src, dest);
-        System.out.println(friendship);
-        Friendship2 backFriendship = friendship2Repo.findBySrcUserEmailAndDestUserEmail(dest, src);
-        System.out.println(backFriendship);
+        if (friendship != null) {
+            System.out.println("Friendship: " + friendship.toString());
+        }
+
+        Friendship2 invertedFriendship = friendship2Repo.findBySrcUserEmailAndDestUserEmail(dest, src);
+
+        if (invertedFriendship != null) {
+            System.out.println("Inverted Friendship: " + invertedFriendship.toString());
+        }
 
         if(friendship == null){
-            friendship = backFriendship;
+            friendship = invertedFriendship;
         }
 
         switch(protocol.getMethod()) {
@@ -43,15 +49,19 @@ public class FriendshipService {
                 }
                 break;
             case "DENY":
-                if(friendship.getStatus().equals("PENDING")){
-                    friendship2Repo.delete(friendship);
-                    friendship.setStatus("DENIED");
+                if (friendship != null) {
+                    if (friendship.getStatus().equals("PENDING")) {
+                        friendship2Repo.delete(friendship);
+                        friendship.setStatus("DENIED");
+                    }
                 }
                 break;
             case "REMOVE":
-                if (friendship.getStatus().equals("ACCEPTED")) {
-                    friendship2Repo.delete(friendship);
-                    friendship.setStatus("REMOVED");
+                if (friendship != null) {
+                    if (friendship.getStatus().equals("ACCEPTED")) {
+                        friendship2Repo.delete(friendship);
+                        friendship.setStatus("REMOVED");
+                    }
                 }
                 break;
             case "BLOCK":

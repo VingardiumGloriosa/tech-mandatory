@@ -20,7 +20,7 @@ public class HomeController {
     FriendshipService friendshipService;
 
     private RestTemplate restTemplate = new RestTemplate();
-    private static String currentHost = "http://localhost:9090/";
+    private static String currentHost = "http://192.168.0.181:9090/";
 
     public HomeController(FriendshipService friendshipService) {
         this.friendshipService = friendshipService;
@@ -30,7 +30,7 @@ public class HomeController {
     @PostMapping("/sendFriendship")
     public String sendFriendshipRequest(Model model, @ModelAttribute Protocol protocol) {
         Protocol request = new Protocol(protocol);
-        System.out.println(request);
+        System.out.println("sendFriendship request:"+ request);
         String URL = request.getDEST_Host() + "/handleFriendship";
         Map<String, String> reqMap = new HashMap<>();
         reqMap.put("method", request.getMethod());
@@ -41,9 +41,9 @@ public class HomeController {
         reqMap.put("version", request.getVersion());
         ResponseEntity<String> response = restTemplate.postForEntity(URL, reqMap, String.class);
         Friendship2 friendship = friendshipService.handleFriendship(request);
-        model.addAttribute("status",friendship.getSrcUserEmail() + " => "+ friendship.getDestUserEmail()
-                +"\nFriendship status:" + friendship.getStatus());
-        System.out.println(response.getBody());
+//        model.addAttribute("status",friendship.getSrcUserEmail() + " => "+ friendship.getDestUserEmail()
+//                +"\nFriendship status:" + friendship.getStatus());
+        System.out.println("Response: "+ response.getBody());
         model.addAttribute("response", response.getBody());
         return "index";
     }
@@ -51,7 +51,7 @@ public class HomeController {
     //FRIENDSHIP REQUEST RECEIVED
     @PostMapping("/handleFriendship")
     public ResponseEntity<String> handleFriendshipRequest(@RequestBody Map<String,String> req, Model model) {
-        System.out.println(req);
+        System.out.println("handleFriendship request:" + req);
         Protocol request = new Protocol(req);
         if (request.getDEST_Host().equals(currentHost)) {
             Friendship2 friendship = friendshipService.handleFriendship(request);
@@ -59,7 +59,7 @@ public class HomeController {
                     +"\nFriendship status:" + friendship.getStatus());
             return ResponseEntity.ok("Request handled! Status: " + friendship.getStatus());
         }
-        return ResponseEntity.ok("Request handled but something went wrong");
+        return ResponseEntity.ok("Request handled but current host and request destination host don't match.");
     }
 
 
