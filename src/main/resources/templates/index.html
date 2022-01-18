@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="UTF-8">
   <title>Tech - Home</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -16,6 +17,9 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item" sec:authorize="hasAnyRole('ROLE_ADMIN')">
+                    <a class="nav-link" th:href="@{/users}">Users</a>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{/friendRequests}">Friend Requests</a>
                 </li>
@@ -23,6 +27,9 @@
                     <a class="nav-link" th:href="@{/friends}">Friends</a>
                 </li>
             </ul>
+            <form class="d-flex" th:action="@{/logout}" method="get">
+                <button class="btn btn-outline-success" type="submit">Logout</button>
+            </form>
         </div>
     </div>
 </nav>
@@ -30,44 +37,12 @@
 
 <h1>Welcome to FriendBookGram!</h1>
 
-<!--Greetings Test-->
-<form method="post" action="/sendGetGreeting">
-    <input type="submit" value="Send GET Greeting">
-</form>
-
 <form method="post" action="/sendPostGreeting">
-    <input type="submit" value="Send POST Greeting">
+    <input type="submit" value="Send Greeting">
 </form>
 
 <p>Answer:</p>
 <h3 th:text="${greeting}"></h3>
-<!--Test end-->
-
-<!--Friendship Test-->
-<form method="post" th:action="@{/sendFriendship}" th:object="${protocol}">
-    <select th:field="*{method}">
-        <option th:value="ADD" >Send friendship request</option>
-        <option th:value="ACCEPT" >Accept friendship</option>
-        <option th:value="DENY" >Deny friendship</option>
-        <option th:value="REMOVE" >Remove friend</option>
-        <option th:value="BLOCK" >Block user</option>
-    </select>
-    <label>Source user email</label>
-    <input type="text" th:field="*{SRC}">
-    <label>Source user host</label>
-    <input type="text" th:field="*{SRC_Host}">
-    <label>Destination user email</label>
-    <input type="text" th:field="*{DEST}">
-    <label>Destination user host</label>
-    <input type="text" th:field="*{DEST_Host}">
-    <label>Version</label>
-    <input type="text" th:field="*{version}">
-    <input type="submit" value="Submit Friendship">
-</form>
-
-<h3 th:text="${status}"></h3>
-<h3 th:text="${response}"></h3>
-<!--Test end-->
 
 </body>
 </html>
