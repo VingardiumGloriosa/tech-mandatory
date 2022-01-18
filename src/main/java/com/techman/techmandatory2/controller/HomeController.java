@@ -20,7 +20,7 @@ public class HomeController {
     FriendshipService friendshipService;
 
     private RestTemplate restTemplate = new RestTemplate();
-    public static String currentHost = "http://localhost:9090/";
+    private static String currentHost = "http://localhost:9090/";
 
     public HomeController(FriendshipService friendshipService) {
         this.friendshipService = friendshipService;
@@ -53,7 +53,7 @@ public class HomeController {
     public ResponseEntity<String> handleFriendshipRequest(@RequestBody Map<String,String> req, Model model) {
         System.out.println(req);
         Protocol request = new Protocol(req);
-        if (request.getDEST_Host().equals(HomeController.currentHost)) {
+        if (request.getDEST_Host().equals(currentHost)) {
             Friendship2 friendship = friendshipService.handleFriendship(request);
             model.addAttribute("status",friendship.getSrcUserEmail() + " => "+ friendship.getDestUserEmail()
                     +"\nFriendship status:" + friendship.getStatus());
@@ -61,7 +61,6 @@ public class HomeController {
         }
         return ResponseEntity.ok("Request handled but something went wrong");
     }
-
 
 
 //    // GREETING CONTROLLER ENDPOINTS (client side)

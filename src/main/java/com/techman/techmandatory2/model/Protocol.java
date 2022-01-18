@@ -18,16 +18,6 @@ public class Protocol {
     private String DEST_Host;
     private String version;
 
-    public Protocol(String req) {
-        Scanner s = new Scanner(req);
-        this.method = s.next();
-        this.SRC = s.next();
-        this.SRC_Host = s.next();
-        this.DEST = s.next();
-        this.DEST_Host = s.next();
-        this.version = s.nextLine();
-    }
-
     public Protocol(Protocol protocol) {
         this.method = protocol.getMethod();
         this.SRC = protocol.getSRC();
