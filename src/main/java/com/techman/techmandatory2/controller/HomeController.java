@@ -1,12 +1,15 @@
 package com.techman.techmandatory2.controller;
 
+import com.techman.techmandatory2.model.Friendship2;
 import com.techman.techmandatory2.model.Protocol;
 import com.techman.techmandatory2.service.FriendshipService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;
@@ -17,73 +20,46 @@ public class HomeController {
 
     FriendshipService friendshipService;
 
+    private RestTemplate restTemplate = new RestTemplate();
+    private static String currentHost = System.getenv("IP_ADDRESS");
+
     public HomeController(FriendshipService friendshipService) {
         this.friendshipService = friendshipService;
     }
 
-    private RestTemplate restTemplate = new RestTemplate();
+    //FRIENDSHIP REQUEST SENT
+    @PostMapping("/sendFriendship")
+    public String sendFriendshipRequest(Model model, @ModelAttribute Protocol protocol) {
+        Protocol request = new Protocol(protocol.toString());
+        System.out.println(request);
+        String URL = request.getDEST_Host() + "/handleFriendship";
+        Map<String, String> reqMap = new HashMap<>();
+        reqMap.put("SRC", request.getSRC());
+        reqMap.put("SRC Host", request.getSRC_Host());
+        reqMap.put("DEST", request.getDEST());
+        reqMap.put("DEST Host", request.getDEST_Host());
+        reqMap.put("Version", request.getVersion());
+        ResponseEntity response = restTemplate.postForEntity(URL, reqMap, String.class);
+        Friendship2 friendship = friendshipService.getFriendship(request);
+        model.addAttribute("status",friendship.getSrcUserEmail() + " => "+ friendship.getDestUserEmail()
+                +"\nFriendship status:" + friendship.getStatus());
+        model.addAttribute("response", response.getBody());
+        return "index";
+    }
 
-    private static String currentHost = System.getenv("IP_ADDRESS");
-
-    @PostMapping("/friendship")
-    public ResponseEntity<String> friendship(@RequestBody String req) {
-
+    //FRIENDSHIP REQUEST RECEIVED
+    @PostMapping("/handleFriendship")
+    public String handleFriendshipRequest(@RequestBody String req, Model model) {
+        System.out.println(req);
         Protocol request = new Protocol(req);
         if (request.getDEST_Host().equals(currentHost)) {
             friendshipService.handleFriendship(request);
-            return ResponseEntity.ok("Response Handled");
         }
-
-        else {
-            String REQUEST_URL = request.getDEST_Host() + "/friendship";
-          Map<String, String> reqMap = new HashMap<>();
-          reqMap.put("SRC", "email@email.com"); //fill in with the data from the PROTOCOL (request)
-          reqMap.put("SRC Host", "Facebook");
-          reqMap.put("DEST", "email@email.com");
-          reqMap.put("DEST Host", "Instagram");
-            restTemplate.postForEntity(REQUEST_URL, reqMap, String.class);
-        }
-        return ResponseEntity.ok("Done");
+        Friendship2 friendship = friendshipService.getFriendship(request);
+        model.addAttribute("status",friendship.getSrcUserEmail() + " => "+ friendship.getDestUserEmail()
+                                        +"\nFriendship status:" + friendship.getStatus());
+        return "index";
     }
-
-
-//    final String API_ADD_FRIEND = "http://localhost:9091/addFriend";
-//    final String API_ACCEPT_FRIENDSHIP = "";
-//    final String API_DENY_FRIENDSHIP = "";
-//    final String API_REMOVE_FRIENDSHIP = "";
-//    final String API_BLOCK_USER = "";
-//
-//    @PostMapping("/addFriend")
-//    public String addFriend(Model model) {
-//        Map<String, String> reqMap = new HashMap<>();
-//        reqMap.put("SRC", "email@email.com");
-//        reqMap.put("SRC Host", "Facebook");
-//        reqMap.put("DEST", "email@email.com");
-//        reqMap.put("DEST Host", "Instagram");
-//        ResponseEntity response = restTemplate.postForEntity(API_GREETING_POST, reqMap, String.class);
-//        model.addAttribute("greeting", response.getBody());
-//        return "index";
-//    }
-//
-//    @PostMapping("/acceptFriendship")
-//    public String acceptFriend(Model model) {
-//        return "index";
-//    }
-//
-//    @PostMapping("/denyFriendship")
-//    public String denyFriendship(Model model) {
-//        return "index";
-//    }
-//
-//    @PostMapping("/removeFriendship")
-//    public String removeFriendship(Model model) {
-//        return "index";
-//    }
-//
-//    @PostMapping("/blockUser")
-//    public String blockUser(Model model) {
-//        return "index";
-//    }
 
 
 

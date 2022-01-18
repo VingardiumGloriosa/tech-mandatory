@@ -40,6 +40,11 @@ public class FriendshipService {
                     }
                 }
                 break;
+            case "DENY":
+                if(friendship.getStatus().equals("PENDING")){
+                    friendship2Repo.delete(friendship);
+                }
+                break;
             case "REMOVE":
                 if (friendship.getStatus().equals("ACCEPTED")) {
                     friendship2Repo.delete(friendship);
@@ -56,5 +61,9 @@ public class FriendshipService {
                 break;
             default:
         }
+    }
+
+    public Friendship2 getFriendship(Protocol protocol) {
+        return friendship2Repo.findBySrcUserEmailAndDestUserEmail(protocol.getSRC(), protocol.getDEST());
     }
 }

@@ -2,6 +2,7 @@ package com.techman.techmandatory2.controller;
 
 
 
+import com.techman.techmandatory2.model.Protocol;
 import com.techman.techmandatory2.model.User;
 import com.techman.techmandatory2.repo.UserRepo;
 import com.techman.techmandatory2.repo.OutsideUserRepo;
@@ -41,6 +42,7 @@ public class MainController {
     {
         //get logged in user
         User user = securityUtil.getLoggedInUser();
+        model.addAttribute("protocol", new Protocol());
 
 //        List<Booking> bookings;
 
