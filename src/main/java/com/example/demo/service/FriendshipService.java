@@ -15,7 +15,7 @@ public class FriendshipService {
         this.friendship2Repo = friendship2Repo;
     }
 
-    public void handleFriendship(Protocol protocol) {
+    public Friendship2 handleFriendship(Protocol protocol) {
         String src = protocol.getSRC();
         String dest = protocol.getDEST();
         Friendship2 friendship = friendship2Repo.findBySrcUserEmailAndDestUserEmail(src, dest);
@@ -43,11 +43,13 @@ public class FriendshipService {
             case "DENY":
                 if(friendship.getStatus().equals("PENDING")){
                     friendship2Repo.delete(friendship);
+                    friendship.setStatus("DENIED");
                 }
                 break;
             case "REMOVE":
                 if (friendship.getStatus().equals("ACCEPTED")) {
                     friendship2Repo.delete(friendship);
+                    friendship.setStatus("REMOVED");
                 }
                 break;
             case "BLOCK":
@@ -61,6 +63,8 @@ public class FriendshipService {
                 break;
             default:
         }
+
+        return friendship;
     }
 
     public Friendship2 getFriendship(Protocol protocol) {

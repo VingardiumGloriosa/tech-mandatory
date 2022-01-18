@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Map;
 import java.util.Scanner;
 
 @NoArgsConstructor
@@ -25,6 +26,15 @@ public class Protocol {
         this.DEST = s.next();
         this.DEST_Host = s.next();
         this.version = s.next();
+    }
+
+    public Protocol(Map<String,String> req) {
+        this.method = req.get("method");
+        this.SRC = req.get("SRC");
+        this.SRC_Host = req.get("SRC Host");
+        this.DEST = req.get("DEST");
+        this.DEST_Host = req.get("DEST Host");
+        this.version = req.get("version");
     }
 
     @Override

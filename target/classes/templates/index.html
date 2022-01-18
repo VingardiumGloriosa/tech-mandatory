@@ -16,9 +16,6 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item" sec:authorize="hasAnyRole('ROLE_ADMIN')">
-                    <a class="nav-link" th:href="@{/users}">Users</a>
-                </li>
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{/friendRequests}">Friend Requests</a>
                 </li>
@@ -36,18 +33,18 @@
 
 <h1>Welcome to FriendBookGram!</h1>
 
-<!--&lt;!&ndash;Greetings Test&ndash;&gt;-->
-<!--<form method="post" action="/sendGetGreeting">-->
-<!--    <input type="submit" value="Send GET Greeting">-->
-<!--</form>-->
+<!--Greetings Test-->
+<form method="post" action="/sendGetGreeting">
+    <input type="submit" value="Send GET Greeting">
+</form>
 
-<!--<form method="post" action="/sendPostGreeting">-->
-<!--    <input type="submit" value="Send POST Greeting">-->
-<!--</form>-->
+<form method="post" action="/sendPostGreeting">
+    <input type="submit" value="Send POST Greeting">
+</form>
 
-<!--<p>Answer:</p>-->
-<!--<h3 th:text="${greeting}"></h3>-->
-<!--&lt;!&ndash;Test end&ndash;&gt;-->
+<p>Answer:</p>
+<h3 th:text="${greeting}"></h3>
+<!--Test end-->
 
 <!--Friendship Test-->
 <form method="post" th:action="@{/sendFriendship}" th:object="${protocol}">
