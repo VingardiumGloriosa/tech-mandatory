@@ -2,19 +2,25 @@ package com.techman.techmandatory2.controller;
 
 
 
+import com.techman.techmandatory2.model.Friendship2;
+import com.techman.techmandatory2.model.Protocol;
 import com.techman.techmandatory2.model.User;
 import com.techman.techmandatory2.repo.UserRepo;
 import com.techman.techmandatory2.repo.OutsideUserRepo;
 import com.techman.techmandatory2.security.SecurityUtil;
+import com.techman.techmandatory2.service.FriendshipService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class MainController {
@@ -23,6 +29,9 @@ public class MainController {
 
     @Autowired
     OutsideUserRepo outsideUserRepo;
+
+    @Autowired
+    FriendshipService friendshipService;
 
     @Autowired
     SecurityUtil securityUtil;
@@ -41,6 +50,7 @@ public class MainController {
     {
         //get logged in user
         User user = securityUtil.getLoggedInUser();
+        model.addAttribute("protocol", new Protocol());
 
 //        List<Booking> bookings;
 
@@ -54,6 +64,8 @@ public class MainController {
 //        }
         return "index";
     }
+
+
 
     @GetMapping("/signUp")
     public String showSignUp(Model model)
