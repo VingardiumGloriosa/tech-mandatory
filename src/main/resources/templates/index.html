@@ -23,9 +23,6 @@
                     <a class="nav-link" th:href="@{/friends}">Friends</a>
                 </li>
             </ul>
-            <form class="d-flex" th:action="@{/logout}" method="get">
-                <button class="btn btn-outline-success" type="submit">Logout</button>
-            </form>
         </div>
     </div>
 </nav>
@@ -64,7 +61,7 @@
     <label>Destination user host</label>
     <input type="text" th:field="*{DEST_Host}">
     <label>Version</label>
-    <input type="text" th:field="*{version}" th:value="1">
+    <input type="text" th:field="*{version}">
     <input type="submit" value="Submit Friendship">
 </form>
 

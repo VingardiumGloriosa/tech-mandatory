@@ -30,15 +30,16 @@ public class HomeController {
     //FRIENDSHIP REQUEST SENT
     @PostMapping("/sendFriendship")
     public String sendFriendshipRequest(Model model, @ModelAttribute Protocol protocol) {
-        Protocol request = new Protocol(protocol.toString());
+        Protocol request = new Protocol(protocol);
         System.out.println(request);
         String URL = request.getDEST_Host() + "/handleFriendship";
         Map<String, String> reqMap = new HashMap<>();
+        reqMap.put("method", request.getMethod());
         reqMap.put("SRC", request.getSRC());
         reqMap.put("SRC Host", request.getSRC_Host());
         reqMap.put("DEST", request.getDEST());
         reqMap.put("DEST Host", request.getDEST_Host());
-        reqMap.put("Version", request.getVersion());
+        reqMap.put("version", request.getVersion());
         ResponseEntity<String> response = restTemplate.postForEntity(URL, reqMap, String.class);
         Friendship2 friendship = friendshipService.handleFriendship(request);
         model.addAttribute("status",friendship.getSrcUserEmail() + " => "+ friendship.getDestUserEmail()
@@ -64,29 +65,29 @@ public class HomeController {
 
 
 
-    // GREETING CONTROLLER ENDPOINTS (client side)
-
-    final String API_GREETING_GET = "http://localhost:9091/apiGreetingGet?greeting=hi from client GET";
-    final String API_GREETING_POST = "http://localhost:9091/apiGreetingPost";
-//    private RestTemplate restTemplate = new RestTemplate();
-
-    @PostMapping("/sendGetGreeting")
-    public String sendGetGreeting(Model model) {
-        Map<String, String> reqMap = new HashMap<>();
-        reqMap.put("greeting", "Hello there");
-        ResponseEntity response = restTemplate.getForEntity(API_GREETING_GET, String.class);
-        model.addAttribute("greeting", response.getBody());
-        return "index";
-    }
-
-    @PostMapping("/sendPostGreeting")
-    public String sendGreeting(Model model) {
-        Map<String, String> reqMap = new HashMap<>();
-        reqMap.put("greeting", "Hello there from client POST");
-        ResponseEntity response = restTemplate.postForEntity(API_GREETING_POST, reqMap, String.class);
-        model.addAttribute("greeting", response.getBody());
-        return "index";
-    }
+//    // GREETING CONTROLLER ENDPOINTS (client side)
+//
+//    final String API_GREETING_GET = "http://localhost:9091/apiGreetingGet?greeting=hi from client GET";
+//    final String API_GREETING_POST = "http://localhost:9091/apiGreetingPost";
+////    private RestTemplate restTemplate = new RestTemplate();
+//
+//    @PostMapping("/sendGetGreeting")
+//    public String sendGetGreeting(Model model) {
+//        Map<String, String> reqMap = new HashMap<>();
+//        reqMap.put("greeting", "Hello there");
+//        ResponseEntity response = restTemplate.getForEntity(API_GREETING_GET, String.class);
+//        model.addAttribute("greeting", response.getBody());
+//        return "index";
+//    }
+//
+//    @PostMapping("/sendPostGreeting")
+//    public String sendGreeting(Model model) {
+//        Map<String, String> reqMap = new HashMap<>();
+//        reqMap.put("greeting", "Hello there from client POST");
+//        ResponseEntity response = restTemplate.postForEntity(API_GREETING_POST, reqMap, String.class);
+//        model.addAttribute("greeting", response.getBody());
+//        return "index";
+//    }
 
 
 

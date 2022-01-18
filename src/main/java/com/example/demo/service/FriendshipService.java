@@ -19,7 +19,9 @@ public class FriendshipService {
         String src = protocol.getSRC();
         String dest = protocol.getDEST();
         Friendship2 friendship = friendship2Repo.findBySrcUserEmailAndDestUserEmail(src, dest);
+        System.out.println(friendship);
         Friendship2 backFriendship = friendship2Repo.findBySrcUserEmailAndDestUserEmail(dest, src);
+        System.out.println(backFriendship);
 
         if(friendship == null){
             friendship = backFriendship;

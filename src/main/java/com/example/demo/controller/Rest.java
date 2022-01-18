@@ -7,13 +7,6 @@ import java.util.Map;
     @RestController
     public class Rest {
 
-//        @PostMapping("addFriendAccept")
-//        public ResponseEntity<String> postAddFriendAccept(@RequestBody Map<String, String> req) {
-////            System.out.println("Friendship body: " + );
-////            return ResponseEntity.ok("")
-//        }
-
-
         //GREETING REST ENDPOINTS (SERVER SIDE)
         @GetMapping("apiGreetingGet")
         public ResponseEntity<String> getGreeting(@RequestParam("greeting") String req) {
